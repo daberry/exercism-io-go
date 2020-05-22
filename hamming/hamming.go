@@ -28,7 +28,7 @@ func Distance(a, b string) (int, error) {
 	}
 
 	if strings.Compare(a, b) != 0 {
-		for i := 0; i < len(a); i++ {
+		for i := range a {
 			if a[i] != b[i] {
 				hammingDistance++
 			}
