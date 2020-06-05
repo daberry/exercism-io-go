@@ -5,7 +5,6 @@ package hamming
 
 import (
 	"errors"
-	"strings"
 )
 
 /*
@@ -24,10 +23,10 @@ func Distance(a, b string) (int, error) {
 	hammingDistance := 0
 
 	if len(a) != len(b) {
-		return 0, errors.New("Provided strings are not equal length")
+		return 0, errors.New("provided strings are not equal length")
 	}
 
-	if strings.Compare(a, b) != 0 {
+	if a != b {
 		for i := range a {
 			if a[i] != b[i] {
 				hammingDistance++
