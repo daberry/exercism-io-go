@@ -1,77 +1,37 @@
 package scale
 
-import (
-	"fmt"
-)
+import "strings"
 
-var (
-	sharpPitches         = []string{"C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"}
-	flatPitches          = []string{"C", "Db", "D", "Eb", "E", "F", "Gb", "G", "Ab", "A", "Bb", "B"}
-	noSharpOrFlatPitches = []string{"C", "D", "E", "F", "G", "A", "B"}
+func Scale(tonic string, interval string) (scale []string) {
+	switch tonic {
+	case "C", "G", "D", "A", "E", "B", "F#", "a", "e", "b", "f#", "c#", "g#", "d#":
+		scale = []string{"C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"}
 
-	sharpTonics         = []string{"G", "D", "A", "E", "B", "F# major", "e", "b", "f#", "c#", "g#", "d# minor"}
-	flatTonics          = []string{"F", "Bb", "Eb", "Ab", "Db", "Gb major", "d", "g", "c", "f", "bb", "eb minor"}
-	noSharpOrFlatTonics = []string{"C major", "a minor"}
-)
+	case "F", "Bb", "Eb", "Ab", "Db", "Gb", "d", "g", "c", "f", "bb", "eb":
+		scale = []string{"C", "Db", "D", "Eb", "E", "F", "Gb", "G", "Ab", "A", "Bb", "B"}
+	}
 
-type ()
-
-// Contains tells whether a contains x.
-func Contains(a []string, x string) bool {
-	for _, n := range a {
-		if x == n {
-			return true
+	tonic = strings.Title(tonic)
+	for i, elem := range scale {
+		if elem == tonic {
+			scale = append(scale[i:], scale[:i]...)
+			break
 		}
 	}
-	return false
-}
 
-// Find returns the smallest index i at which x == a[i],
-// or len(a) if there is no such index.
-func Find(a []string, x string) int {
-	for i, n := range a {
-		if x == n {
-			return i
+	if interval == "" {
+		return scale
+	}
+
+	var partialScale []string
+	stepSize := map[string]int{"m": 1, "M": 2, "A": 3}
+	i := 0
+	for _, diff := range strings.Split(interval, "") {
+		if step, ok := stepSize[diff]; ok {
+			partialScale = append(partialScale, scale[i%len(scale)])
+			i += step
 		}
 	}
-	return len(a)
-}
 
-func getNextTone(currentTone string, intervalToNextTone string, tonic string) string {
-	var distanceToNextTone int
-
-	if intervalToNextTone == "M" {
-		distanceToNextTone = 2
-	}
-
-	if intervalToNextTone == "m" {
-		distanceToNextTone = 1
-	}
-
-	if intervalToNextTone == "" {
-		distanceToNextTone = -1
-	}
-
-	return "placeholder" + string(distanceToNextTone)
-}
-
-//Scale returns the appropriate scale for the given tonic and interval
-func Scale(tonic string, interval string) []string {
-	resultScale := make([]string, len(sharpPitches))
-	fmt.Println(resultScale)
-	if tonic == "C" {
-		return sharpPitches
-	}
-
-	fmt.Println(reflect.typeof(resultScale[5]))
-
-	if Contains(flatTonics, tonic) {
-		copy(resultScale, flatPitches)
-		start := Find(resultScale, tonic)
-		fmt.Println(reflect.typeof(resultScale[start]))
-		return reflect.typeof(resultScale[start:])
-		// resultScale = append(resultScale[start:], resultScale[:start])
-	}
-
-	return resultScale
+	return partialScale
 }
