@@ -1,6 +1,3 @@
-// This is a "stub" file.  It's a little start on your solution.
-// It's not a complete solution though; you have to write some code.
-
 // Package proverb implements a solution to the exercism.io prompt by the same name
 package proverb
 
