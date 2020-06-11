@@ -1,54 +1,38 @@
 //Package romannumerals implements a solution to the exercism.io prompt by the same name
 package romannumerals
 
-import "errors"
+import (
+	"fmt"
+	"strings"
+)
+
+type arabicToRoman struct {
+	arabic int
+	roman  string
+}
+
+var arabicToRomanDictionary []arabicToRoman = []arabicToRoman{
+	{1000, "M"},
+	{900, "CM"}, {500, "D"}, {400, "CD"}, {100, "C"},
+	{90, "XC"}, {50, "L"}, {40, "XL"}, {10, "X"},
+	{9, "IX"}, {5, "V"}, {4, "IV"}, {1, "I"},
+}
 
 //ToRomanNumeral converts an Arabic numeral integer to a Roman numeral string
-func ToRomanNumeral(arabic int) (roman string, err error) {
-	if arabic <= 0 || arabic > 3000 {
-		return "", errors.New("provided arabic integer outside of acceptable range")
+func ToRomanNumeral(number int) (string, error) {
+	var str strings.Builder
+
+	if number <= 0 || number > 3000 {
+		return "", fmt.Errorf("provided arabic integer (%d) is outside of acceptable range", number)
 	}
-	for ok := true; ok; ok = arabic > 0 {
-		if arabic >= 1000 {
-			roman += "M"
-			arabic -= 1000
-		} else if arabic >= 900 {
-			roman += "CM"
-			arabic -= 900
-		} else if arabic >= 500 {
-			roman += "D"
-			arabic -= 500
-		} else if arabic >= 400 {
-			roman += "CD"
-			arabic -= 400
-		} else if arabic >= 100 {
-			roman += "C"
-			arabic -= 100
-		} else if arabic >= 90 {
-			roman += "XC"
-			arabic -= 90
-		} else if arabic >= 50 {
-			roman += "L"
-			arabic -= 50
-		} else if arabic >= 40 {
-			roman += "XL"
-			arabic -= 40
-		} else if arabic >= 10 {
-			roman += "X"
-			arabic -= 10
-		} else if arabic >= 9 {
-			roman += "IX"
-			arabic -= 9
-		} else if arabic >= 5 {
-			roman += "V"
-			arabic -= 5
-		} else if arabic >= 4 {
-			roman += "IV"
-			arabic -= 4
-		} else {
-			roman += "I"
-			arabic--
+
+	for _, entry := range arabicToRomanDictionary {
+		for number >= entry.arabic {
+			fmt.Println(entry.arabic, number)
+			str.WriteString(entry.roman)
+			number -= entry.arabic
 		}
 	}
-	return roman, err
+
+	return str.String(), nil
 }
