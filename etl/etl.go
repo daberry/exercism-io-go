@@ -9,8 +9,7 @@ func Transform(input map[int][]string) (output map[string]int) {
 
 	for i, letters := range input {
 		for _, letter := range letters {
-			letter = strings.ToLower(letter)
-			output[letter] = i
+			output[strings.ToLower(letter)] = i
 		}
 	}
 
