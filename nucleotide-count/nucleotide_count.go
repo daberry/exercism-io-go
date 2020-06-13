@@ -3,11 +3,10 @@ package dna
 
 import (
 	"fmt"
-	"regexp"
 )
 
 // Histogram is a mapping from nucleotide to its count in given DNA.
-type Histogram map[rune]int
+type Histogram map[rune]uint
 
 // DNA is a list of nucleotides.
 type DNA string
@@ -15,18 +14,16 @@ type DNA string
 // Counts generates a histogram of valid nucleotides in the given DNA.
 // Returns an error if d contains an invalid nucleotide.
 func (d DNA) Counts() (Histogram, error) {
-	if isInvalid, _ := regexp.MatchString(`[^ATGC]`, string(d)); isInvalid {
-		return nil, fmt.Errorf("invalid character in nucleotide string")
-	}
+	h := Histogram{'A': 0, 'C': 0, 'G': 0, 'T': 0}
 
-	var h Histogram = map[rune]int{'A': 0, 'C': 0, 'G': 0, 'T': 0}
+	for _, nucleotide := range d {
+		_, ok := h[nucleotide]
 
-	for nucleotide := range h {
-		for _, rune := range d {
-			if nucleotide == rune {
-				h[nucleotide]++
-			}
+		if !ok {
+			return nil, fmt.Errorf("invalid character in nucleotide string %v", nucleotide)
 		}
+
+		h[nucleotide]++
 	}
 
 	return h, nil
