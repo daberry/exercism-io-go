@@ -7,5 +7,5 @@ import (
 
 // AddGigasecond increases the given time by one gigasecond (10^9 sec)
 func AddGigasecond(t time.Time) time.Time {
-	return t.Add(time.Second * 1000000000)
+	return t.Add(time.Second * 1e9)
 }
