@@ -1,15 +1,28 @@
-// This is a "stub" file.  It's a little start on your solution.
-// It's not a complete solution though; you have to write some code.
-
-// Package acronym should have a package comment that summarizes what it's about.
-// https://golang.org/doc/effective_go.html#commentary
+// Package acronym implements a solution to the exercism.io prompt by the same name
 package acronym
 
-// Abbreviate should have a comment documenting it.
-func Abbreviate(s string) string {
-	// Write some code here to pass the test suite.
-	// Then remove all the stock comments.
-	// They're here to help you get started but they only clutter a finished solution.
-	// If you leave them in, reviewers may protest!
-	return ""
+import (
+	"fmt"
+	"regexp"
+	"strings"
+)
+
+// Abbreviate returns an all capital letter acronym for the input string, delimiting words with non-word characters as defined by Regex
+func Abbreviate(s string) (acronym string) {
+	//split s using non-word char delimiter
+	noPunctuation := regexp.MustCompile(`[[:punct:]]`).ReplaceAllString(s, "")
+	trimmed := regexp.MustCompile(`\s{2,}`).ReplaceAllString(noPunctuation, " ")
+	fmt.Println("trimmed", trimmed)
+	words := strings.Split(trimmed, " ")
+	fmt.Println("words", words, len(words))
+	//create string from first letter in every word
+	for _, word := range words {
+		fmt.Println("current word", word)
+		if len(word) > 0 {
+			acronym += string(word[0])
+		}
+	}
+	//capitalize letters for acronym
+
+	return strings.ToUpper(acronym)
 }
