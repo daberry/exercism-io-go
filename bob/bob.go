@@ -19,26 +19,18 @@ He answers 'Whatever.' to anything else.
 */
 func Hey(remark string) string {
 	remark = strings.TrimSpace(remark)
-
-	if len(remark) == 0 {
-		return "Fine. Be that way!"
-	}
-
-	re, _ := regexp.Compile(`[a-zA-Z]`)
-
-	punctuation := remark[len(remark)-1]
-
-	if re.MatchString(remark) && strings.ToUpper(remark) == remark {
-		if punctuation == '?' {
-			return "Calm down, I know what I'm doing!"
-		}
-
-		return "Whoa, chill out!"
-	}
-
-	if punctuation == '?' {
+	isQuestion, _ := regexp.MatchString("\\A.*\\?\\z", remark)
+	isYelling, _ := regexp.MatchString("\\A[A-Z1-9\\s[:punct:]]+[A-Z][A-Z1-9\\s[:punct:]]+\\z", remark)
+	switch {
+	case isQuestion && isYelling:
+		return "Calm down, I know what I'm doing!"
+	case isQuestion:
 		return "Sure."
+	case isYelling:
+		return "Whoa, chill out!"
+	case remark == "":
+		return "Fine. Be that way!"
+	default:
+		return "Whatever."
 	}
-
-	return "Whatever."
 }
