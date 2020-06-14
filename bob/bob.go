@@ -1,6 +1,11 @@
 // Package bob implements a solution to the exercism.io prompt by the same name
 package bob
 
+import (
+	"regexp"
+	"strings"
+)
+
 /* Hey returns the proper response for Bob's "personality" as defined in the prompt
 Bob answers 'Sure.' if you ask him a question, such as "How are you?".
 
@@ -13,17 +18,27 @@ He says 'Fine. Be that way!' if you address him without actually saying anything
 He answers 'Whatever.' to anything else.
 */
 func Hey(remark string) string {
-	//if remark to uppercase == remark then the person is yelling
-	//if punctuation (last character) is a period
-	//answer with 'Whoa, chill out!'
-	//if punctuation is a question mark
-	//answer with 'Calm down, I know what I'm doing!'
-	//if remark is not yelling (else)
-	//if punctuation is a question mark
-	//answer with 'Sure.'
-	//if remark is blank
-	//answer with 'Fine. Be that way!'
+	remark = strings.TrimSpace(remark)
 
-	//otherwise answer with 'Whatever'
-	return ""
+	if len(remark) == 0 {
+		return "Fine. Be that way!"
+	}
+
+	re, _ := regexp.Compile(`[a-zA-Z]`)
+
+	punctuation := remark[len(remark)-1]
+
+	if re.MatchString(remark) && strings.ToUpper(remark) == remark {
+		if punctuation == '?' {
+			return "Calm down, I know what I'm doing!"
+		}
+
+		return "Whoa, chill out!"
+	}
+
+	if punctuation == '?' {
+		return "Sure."
+	}
+
+	return "Whatever."
 }
