@@ -12,12 +12,16 @@ func Abbreviate(s string) (acronym string) {
 	//split s using non-word char delimiter
 	noPunctuation := regexp.MustCompile(`[[:punct:]]`).ReplaceAllString(s, "")
 	trimmed := regexp.MustCompile(`\s{2,}`).ReplaceAllString(noPunctuation, " ")
+
 	fmt.Println("trimmed", trimmed)
 	words := strings.Split(trimmed, " ")
 	fmt.Println("words", words, len(words))
+
 	//create string from first letter in every word
+
 	for _, word := range words {
 		fmt.Println("current word", word)
+
 		if len(word) > 0 {
 			acronym += string(word[0])
 		}
