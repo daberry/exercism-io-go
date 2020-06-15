@@ -15,7 +15,6 @@ func Abbreviate(s string) (acronym string) {
 	words := strings.Split(trimmed, " ")
 
 	for _, word := range words {
-
 		if len(word) > 0 {
 			acronym += string(word[0])
 		}
