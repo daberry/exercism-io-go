@@ -12,14 +12,13 @@ which states that from any positive integer starting number
 */
 func CollatzConjecture(start int) (steps int, e error) {
 	if start <= 0 {
-		return steps, fmt.Errorf("invalid starting number: %d", start)
+		return -1, fmt.Errorf("invalid starting number: %d", start)
 	}
 
-	if start == 1 {
-		return
-	}
-
-	for ok := true; ok; ok = start != 1 {
+	for {
+		if start == 1 {
+			return
+		}
 		if start%2 == 0 {
 			start = start / 2
 		} else {
@@ -28,6 +27,4 @@ func CollatzConjecture(start int) (steps int, e error) {
 
 		steps++
 	}
-
-	return
 }
